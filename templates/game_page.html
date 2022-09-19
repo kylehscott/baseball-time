@@ -1,0 +1,169 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set game = games[0] %}
+
+<div class="container-fluid" style="text-align: center; width: 85%">
+  <br>
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ game.url }}" allowfullscreen></iframe>
+  </div>
+  <div class="">
+  <p style="text-align: right;">Uploaded by <a target="_blank" href="https://www.youtube.com/channel/{{ channel_url }}">{{ channel_name }}</a></p>
+
+  <div class="row">
+    <br>
+    {% if gamelog is equalto None %}
+
+    <div class="col-md-4">
+      <h2><a href="/teams/{{ game.awayTeam }}/{{ year }}">{{ game.awayTeam }}</a></h2>
+    </div>
+    <div class="col-md-4">
+      <br>
+      <p>This game is not in retrosheet</p>
+    </div>
+    <div class="col-md-4">
+      <h2><a href="/teams/{{ game.homeTeam }}/{{ year }}">{{ game.homeTeam }}</a></h2>
+    </div>
+
+    {% else %}
+
+    <div class="col-12">
+
+      {% if gamelog.gameType is equalto "ASG" %}
+      <h5>{{ year }} All-Star Game</h5>
+      {% endif %}
+
+      {% if gamelog.gameType is equalto "DS" %}
+      <h5>{{ gamelog.homTeamLg }}{{ gamelog.gameType }}: Game {{ gamelog.homTeamGm }}</h5>
+      {% endif %}
+
+      {% if gamelog.gameType is equalto "CS" %}
+      <h5>{{ gamelog.homTeamLg }}{{ gamelog.gameType }}: Game {{ gamelog.homTeamGm }}</h5>
+      {% endif %}
+
+      {% if gamelog.gameType is equalto "WC" %}
+      <h5>{{ year }} {{ gamelog.homTeamLg }} Wild Card Game</h5>
+      {% endif %}
+
+      {% if gamelog.gameType is equalto "WS" %}
+      <h5>{{ year }} World Series: Game {{ gamelog.homTeamGm }}</h5>
+      {% endif %}
+
+      <h4><a href="/pitchers/{{ gamelog.visPitchId }}/">{{ gamelog.visPitch }}</a> vs <a href="/pitchers/{{ gamelog.homPitchId }}/">{{ gamelog.homPitch }}</a></h4>
+      <p>{{ gamelog.dayOfWeek }}, {{ month_letter }} {{ day_ending }}, {{ gamelog.date[:4] }}</p>
+      <p>{{ ballpark.name }} - {{ ballpark.city}}, {{ ballpark.state }}</p>
+      <p>Attendance: {{ gamelog.attendance[:2] }},{{ gamelog.attendance[2:] }} - Time of game: {{ time_of_game }}</p>
+    </div>
+
+    {% endif %}
+
+  </div>
+
+
+{% if gamelog is not equalto None %}
+<br>
+{% endif %}
+<div class="container" style="width: 100%">
+{% if gamelog is not equalto None %}
+
+  <div class="row">
+    <div class="col-6">
+      <center>
+      <h2><a href="/teams/{{ game.awayTeam }}/{{ year }}">{{ visiting_team.location_name}} {{ visiting_team.nickname }}</a></h2>
+      <h5>Starting Lineup</h5>
+      <p>Manager: <a href="/managers/{{ gamelog.visManId }}/">{{ gamelog.visMan }}</a></p>
+      <table class="table" style="text-align: center">
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatOneID }}/">1. {{ gamelog.visBatOne }} - {{ positions[gamelog.visBatOnePos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatTwoID }}/">2. {{ gamelog.visBatTwo }} - {{ positions[gamelog.visBatTwoPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatThreeID }}/">3. {{ gamelog.visBatThree }} - {{ positions[gamelog.visBatThreePos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatFourID }}/">4. {{ gamelog.visBatFour }} - {{ positions[gamelog.visBatFourPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatFiveID }}/">5. {{ gamelog.visBatFive }} - {{ positions[gamelog.visBatFivePos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatSixID }}/">6. {{ gamelog.visBatSix }} - {{ positions[gamelog.visBatSixPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatSevenID }}/">7. {{ gamelog.visBatSeven }} - {{ positions[gamelog.visBatSevenPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatEightID }}/">8. {{ gamelog.visBatEight }} - {{ positions[gamelog.visBatEightPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.visBatNineID }}/">9. {{ gamelog.visBatNine }} - {{ positions[gamelog.visBatNinePos|int] }}</a></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-6">
+      <center>
+      <h2><a href="/teams/{{ game.homeTeam }}/{{ year }}">{{ home_team.location_name}} {{ home_team.nickname }}</a></h2>
+      <h5>Starting Lineup</h5>
+      <p>Manager: <a href="/managers/{{ gamelog.homManId }}/">{{ gamelog.homMan }}</a></p>
+      <table class="table" style="text-align: center">
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatOneID }}/">1. {{ gamelog.homBatOne }} - {{ positions[gamelog.homBatOnePos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatTwoID }}/">2. {{ gamelog.homBatTwo }} - {{ positions[gamelog.homBatTwoPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatThreeID }}/">3. {{ gamelog.homBatThree }} - {{ positions[gamelog.homBatThreePos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatFourID }}/">4. {{ gamelog.homBatFour }} - {{ positions[gamelog.homBatFourPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatFiveID }}/">5. {{ gamelog.homBatFive }} - {{ positions[gamelog.homBatFivePos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatSixID }}/">6. {{ gamelog.homBatSix }} - {{ positions[gamelog.homBatSixPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatSevenID }}/">7. {{ gamelog.homBatSeven }} - {{ positions[gamelog.homBatSevenPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatEightID }}/">8. {{ gamelog.homBatEight }} - {{ positions[gamelog.homBatEightPos|int] }}</a></td>
+        </tr>
+        <tr>
+          <td><a href="/batters/{{ gamelog.homBatNineID }}/">9. {{ gamelog.homBatNine }} - {{ positions[gamelog.homBatNinePos|int] }}</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+
+{% endif %}
+<br>
+<p class="text-center"><a href="https://www.baseball-reference.com/boxes/{{ team }}/{{ team }}{{ year }}{{ month }}{{ day }}{{ game_no }}.shtml" target="_blank">Click here for Baseball-Reference box score and more game info</a><p>
+
+<br>
+<script type="text/javascript">
+  amzn_assoc_placement = "adunit0";
+  amzn_assoc_search_bar = "true";
+  amzn_assoc_tracking_id = "baseballtim03-20";
+  amzn_assoc_search_bar_position = "bottom";
+  amzn_assoc_ad_mode = "search";
+  amzn_assoc_ad_type = "smart";
+  amzn_assoc_marketplace = "amazon";
+  amzn_assoc_region = "US";
+  amzn_assoc_title = "Shop Related Products";
+  amzn_assoc_default_search_phrase = "{{ home_team.location_name}} {{ home_team.nickname }}";
+  amzn_assoc_default_category = "Collectibles";
+  amzn_assoc_linkid = "8e597f154f5b1a7423df5eb372485697";
+  amzn_assoc_default_browse_node = "3250697011";
+</script>
+<script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script>
+</div>
+</div>
+</div>
+{% endblock %}

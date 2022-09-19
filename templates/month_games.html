@@ -1,0 +1,79 @@
+{% extends "header.html" %}
+
+{% block body %}
+<div class="container">
+
+  <div class="row" style="text-align: center">
+    <div class="container-fluid">
+      <div class="row" style="text-align: center;">
+        <div class="col-4">
+          {% if month|int == 1 %}
+          <a href="/years/{{ year - 1 }}/12/">{{ month_list[11] }}</a>
+          {% else %}
+          <a href="/years/{{ year }}/{{ month|int - 1 }}">{{ month_list[month|int - 2] }}</a>
+          {% endif %}
+        </div>
+        <div class="col-4">
+          <h3><a href="/years/{{ year }}">{{ month_list[month|int - 1] }} {{ year }}</a></h3>
+          <a href="/random?date={{ year }}{{ month }}">Random Game</a>
+          <br>
+        </div>
+        <div class="col-4">
+          {% if month|int == 12 %}
+          <a href="/years/{{ year + 1 }}/1/">{{ month_list[0] }}</a>
+          {% else %}
+          <a href="/years/{{ year }}/{{ month|int + 1 }}">{{ month_list[month|int] }}</a>
+          {% endif %}
+        </div>
+      </div>
+      <br>
+    </div>
+      <br>
+      <hr>
+  <table class="table table-hover">
+    <tr>
+      <th>Date</th>
+      <th>Home Team</th>
+      <th></th>
+      <th>Away Team</th>
+      <th>Home Pitcher</th>
+      <th>Away Pitcher</th>
+    </tr>
+
+  {% for game in games %}
+    {% do game_list.append(game[1].date) %}
+  {% endfor %}
+
+  {% for game in unlisted_games %}
+    {% if game.date not in game_list %}
+    <tr>
+      <td><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }}</a></td>
+      <td><a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">{{ game.homeTeam }}</a></td>
+      <td>vs</td>
+      <td><a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">{{ game.awayTeam }}</a></td>
+      <td></td>
+      <td></td>
+    {% endif %}
+  {% endfor %}
+
+  {% for game in games %}
+
+  {% set gamelog = game[1] %}
+  {% set game = game[0] %}
+
+
+  <tr>
+    <td><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }}
+    {% if gamelog.gameType == "CS" or gamelog.gameType == "DS" or gamelog.gameType == "WC" %}- {{ gamelog.homTeamLg}}{{ gamelog.gameType }}{% if gamelog.gameType != "WC" %}: G{{ gamelog.homTeamGm }}{% endif %}{% elif gamelog.gameType == "WS"%}- WS: G{{ gamelog.homTeamGm }}{% endif %}</a></td>
+    <td><a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">{{ game.homeTeam }}</a></td>
+    <td>vs</td>
+    <td><a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">{{ game.awayTeam }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.homPitchId }}">{{ gamelog.homPitch }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.visPitchId }}">{{ gamelog.visPitch }}</a></td>
+  </tr>
+
+  {% endfor %}
+  </table>
+</div>
+
+{% endblock %}

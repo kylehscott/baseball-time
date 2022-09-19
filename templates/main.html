@@ -1,0 +1,69 @@
+
+{% extends "header.html" %}
+
+{% block body %}
+
+<!--<div class="billboard" style="background-size: 100%; background-image: url('http://www.baseballessential.com/wp-content/uploads/2015/03/dodger-Stadium.jpg'); background-position: top;">-->
+  <img src="/static/images/main.png" style="width: 100%;">
+<!--</div>-->
+  <br>
+  <br>
+  <h3 style="text-align: center">{{ total_games }} games currently available for streaming!</h3>
+  <br>
+  <div class="card">
+    <a href="/pitchers/hallr001/">
+    <div class="card-img-top" style="height: 200px; background-image: url('http://www.nbcsports.com/philadelphia/sites/csnphilly/files/2017/11/07/slide_mainheadline_halladay.jpg'); background-repeat: no-repeat; background-position: 50% 29%; background-size: 100%;"></div>
+    </a>
+  </div>
+  <hr>
+
+<br>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-lg-4">
+      <div class="card" style="width: 20rem;">
+        <div class="card-header">
+          <a href="/playlists/recently-played/">Recently Played Games</a>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for game in recent_games %}
+          {% set game = game[0] %}
+          <li class="list-group-item"><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }} - {{ game.awayTeam }} @ {{ game.homeTeam }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-4">
+      <div class="card" style="width: 20rem;">
+        <div class="card-header">
+          <a href="/playlists/recently-added/">Recently Added Games</a>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for game in recent_added %}
+          {% set game = game[0] %}
+          <li class="list-group-item"><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }} - {{ game.awayTeam }} @ {{ game.homeTeam }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-12 col-lg-4">
+      <div class="card" style="width: 20rem;">
+        <div class="card-header">
+          <a href="/playlists/top-20/">Top 20 Games</a>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="/games/BOS/1975/10/21/0">10/21/1975 - CIN @ BOS</a></li>
+          <li class="list-group-item"><a href="/games/MIN/1991/10/27/0">10/27/1991 - ATL @ MIN</a></li>
+          <li class="list-group-item"><a href="/games/NYN/1986/10/25/0">10/25/1986 - BOS @ NYN</a></li>
+          <li class="list-group-item"><a href="/games/HOU/1986/10/15/0">10/15/1986 - NYN @ HOU</a></li>
+          <li class="list-group-item"><a href="/games/ATL/1992/10/14/0">10/14/1992 - PIT @ ATL</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

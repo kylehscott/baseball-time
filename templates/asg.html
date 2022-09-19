@@ -1,0 +1,34 @@
+{% extends "header.html" %}
+
+{% block body %}
+<h3 style="text-align: center">All-Star Games</h3>
+<div class="container">
+
+  <table class="table table-hover">
+    <tr>
+      <th>Date</th>
+      <th>AL Pitcher</th>
+      <th>NL Pitcher</th>
+      <th>Venue</th>
+    </tr>
+
+    {% for game in games %}
+      {% set gamelog = game[1] %}
+      {% set game = game[0] %}
+      {% set ballpark = ballpark_string(gamelog.parkId) %}
+      <tr>
+        <td><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }}</a></td>
+        {% if game.homeTeam == "ALS" %}
+        <td><a href="/pitchers/{{ gamelog.homPitchId }}">{{ gamelog.homPitch }}</a></td>
+        <td><a href="/pitchers/{{ gamelog.visPitchId }}">{{ gamelog.visPitch }}</a></td>
+        {% else %}
+        <td><a href="/pitchers/{{ gamelog.visPitchId }}">{{ gamelog.visPitch }}</a></td>
+        <td><a href="/pitchers/{{ gamelog.homPitchId }}">{{ gamelog.homPitch }}</a></td>
+        {% endif %}
+        <td>{{ ballpark }} - {{ ballpark.city }}, {{ ballpark.state }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+
+{% endblock %}

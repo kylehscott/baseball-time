@@ -1,0 +1,60 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set months = {} %}
+
+{% for month in month_list %}
+  {% if months.update({month: 0}) %} {% endif %}
+  {% for game in games %}
+    {% set game_date = game.date[4:6] %}
+    {% if game_date|int == month_list.index(month) + 1 %}
+      {% if months.update({month: months[month] + 1}) %} {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+  <div class="row" style="text-align: center">
+    <div class="col-lg-2">
+      <a href="/years/{{ year + 1 }}"><h4>{{ year + 1 }}</h4></a>
+    </div>
+    <div class="col-lg-8">
+      <h2><a href="/years/">{{ year }}</a></h2>
+      <a href="/random?date={{ year }}">Random Game</a>
+    </div>
+    <div class="col-lg-2">
+      <a href="/years/{{ year - 1 }}"><h4>{{ year - 1 }}</h4></a>
+    </div>
+  </div>
+  <hr>
+  <div class="container">
+    <div class="row">
+
+  {% set month_no = 0 %}
+
+  {% for month in month_list %}
+
+  {% set month_no = month_no + 1 %}
+
+  {% if months[month] != 0 %}
+
+  <div class="col-sm-6 col-md-4 col-lg-3" style="text-align: center">
+    <a href="{{ loop.index }}">
+      <div class="card" style="">
+        <div class="card-body">
+          <h4 class="card-title">{{ month }}</h4>
+          <p class="card-text">{{ months[month] }} Game{% if months[month] > 1 %}s{% endif %} Available</p>
+        </div>
+      </div>
+    </a>
+    <br>
+  </div>
+
+  {% endif %}
+
+  {% endfor %}
+
+</div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set days = {} %}
+
+{% for day in range(1, month_range[1] + 1) %}
+  {% if days.update({day: 0}) %} {% endif %}
+  {% for game in games %}
+    {% set game_date = game.date[6:] %}
+    {% if game_date|int == day %}
+      {% if days.update({day: days[day] + 1}) %} {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+<div class="container-fluid">
+  <div class="row" style="text-align: center;">
+    <div class="col-lg-4">
+      {% if month|int == 1 %}
+      <a href="/years/{{ year - 1 }}/12/">{{ month_list[11] }}</a>
+      {% else %}
+      <a href="/years/{{ year }}/{{ month|int - 1 }}">{{ month_list[month|int - 2] }}</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      <h3><a href="/years/{{ year }}">{{ month_list[month|int - 1] }} {{ year }}</a></h3>
+    </div>
+    <div class="col-lg-4">
+      {% if month|int == 12 %}
+      <a href="/years/{{ year + 1 }}/1/">{{ month_list[0] }}</a>
+      {% else %}
+      <a href="/years/{{ year }}/{{ month|int + 1 }}">{{ month_list[month|int] }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+  <hr>
+  <div class="container">
+    <div class="row">
+
+  {% for i in range(1, month_range[1] + 1) %}
+  {% if days[i] != 0 %}
+  <div class="col-sm-6 col-md-4 col-lg-2" style="text-align: center">
+    <a href="{{ i }}">
+      <div class="card text-center" style="">
+        <div class="card-body">
+          <h5 class="card-title">{{ month_list[month|int - 1] }} {{ ord(i) }}</h5>
+          <p class="card-text">{{ days[i] }} Game{% if days[i] > 1%}s{% endif %} Available</p>
+        </div>
+      </div>
+    </a>
+    <br>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+</div>
+
+{% endblock %}

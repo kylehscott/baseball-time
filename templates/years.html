@@ -1,0 +1,64 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set years = {} %}
+
+{% for year in range(2017, 1950, -1) %}
+  {% if years.update({year: 0}) %} {% endif %}
+  {% for game in games %}
+    {% set game_date = game.date[:4] %}
+    {% if game_date == year|string %}
+      {% if years.update({year: years[year] + 1}) %} {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+<h3 style="text-align: center"><a href="/teams">{% if team %}{{ team }} {% endif%}Games By Year</a></h3>
+<a style="text-align: center" href="/random?team={{ team }}">Random Game</a>
+<hr>
+  <div class="container">
+    <div class="row">
+{% for year in range(2017, 1950, -1) %}
+  {% if years[year] != 0 %}
+
+  <div class="col-sm-6 col-md-4 col-lg-2">
+    {% if (request.path == "/teams/MIA/") and year <= 2011 %}
+    <a href="/teams/FLO/{{ year }}">
+    {% elif (request.path == "/teams/WAS/") and year <= 2004 %}
+    <a href="/teams/MON/{{ year }}">
+    {% elif (request.path == "/teams/LAN/") and year <= 1957 %}
+    <a href="/teams/BRO/{{ year }}">
+    {% elif (request.path == "/teams/ANA/") and year <= 1996 %}
+    <a href="/teams/CAL/{{ year }}">
+    {% else %}
+    <a href="{{ year }}">
+    {% endif %}
+      <div class="card text-center">
+        <div class="card-body">
+          <h4 class="card-title">{{ year }}</h4>
+          <p class="card-text">{{ years[year] }} Game{% if years[year] > 1 %}s{% endif %} Available</p>
+        </div>
+      </div>
+    </a>
+    <br>
+  </div>
+<!--      <div class="col">
+    <a href="{{ year }}">
+      <div class="card" style="width: 20rem;">
+        <div class="card-body">
+          <h4 class="card-title">{{ year }}</h4>
+          <p class="card-text">{{ years[year] }} Games Available</p>
+        </div>
+      </div>
+    </a>
+  </div>
+-->
+
+  {% endif %}
+{% endfor %}
+</div>
+  </div>
+
+
+{% endblock %}

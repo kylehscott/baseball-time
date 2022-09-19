@@ -1,0 +1,21 @@
+{% extends "header.html" %}
+
+{% block body %}
+  {% set date = games[0].date %}
+  <h1 style="text-align: center">{{ month_list[month|int - 1] }} {{ ord(date[6:]|int) }}, {{ year }}</h1>
+  {% for game in games %}
+  <hr>
+  <a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{game.date[6:] }}/{{ game.gameNo }}">
+  <div class="row">
+    <div class="col-lg-4">
+      <img class="img-rounded" src="https://i.ytimg.com/vi/{{ game.url }}/hqdefault.jpg" style="height: 200px">
+    </div>
+    <div class="col-lg-8">
+      <h3>{{ game.awayTeam }} @ {{ game.homeTeam }} {% if game.gameNo|int != 0 %}(DH: G{{ game.gameNo }}){% endif %}</h3>
+    </div>
+  </div>
+  </a>
+  {% endfor %}
+  <br>
+  <br>
+{% endblock %}

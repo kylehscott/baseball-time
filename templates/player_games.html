@@ -1,0 +1,56 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set pitcher_name = "Pitcher name" %}
+
+
+
+{% if games[0][1].homPitchId == pitcher_id %}
+{% set pitcher_name = games[0][1].homPitch %}
+{% elif games[0][1].visPitchId == pitcher_id  %}
+{% set pitcher_name = games[0][1].visPitch %}
+{% endif %}
+
+<h3 style="text-align: center">{{ pitcher_name }}</h3>
+<a href="/pitchers/{{ pitcher_id }}/random/" style="text-align: center">Random Game</a>
+<br>
+<div class="container">
+<table class="table table-hover">
+  <tr>
+    <th>Date</th>
+    <th>Team</th>
+    <th>Opp</th>
+    <th>Opp Pitcher</th>
+  </tr>
+  {% for game in games %}
+  {% set gamelog = game[1] %}
+  {% set game = game[0] %}
+  <tr>
+    <td><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }}
+
+      {% if gamelog.gameType == "ASG" %}
+      - {{ game.date[:4] }} All-Star Game
+      {% elif gamelog.gameType != None %}
+      - {% if gamelog.gameType != "WS" %}{{ gamelog.homTeamLg }}{% endif %}{{ gamelog.gameType }}{% if gamelog.gameType != "WC" %}:G{{ gamelog.homTeamGm }}{% endif %}</a>
+      {% endif %}
+    </a></td>
+    <td>
+    {% if gamelog.homPitchId == pitcher_id %}
+    <a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">{{ game.homeTeam }}</a>
+    </td>
+    <td><a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">vs {{ game.awayTeam }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.visPitchId }}/">{{ gamelog.visPitch }}</a></td>
+
+    {% elif gamelog.visPitchId == pitcher_id %}
+    <a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">{{ game.awayTeam }}</a>
+    </td>
+    <td><a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">at {{ game.homeTeam }}</td>
+    <td><a href="/pitchers/{{ gamelog.homPitchId }}/">{{ gamelog.homPitch }}</a></td>
+    {% endif %}
+  </tr>
+
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}

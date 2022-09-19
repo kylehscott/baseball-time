@@ -1,0 +1,107 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set batter_name = "Batter name" %}
+
+{% set gamelog = games[0][1] %}
+
+{% if gamelog.homBatOneID == batter_id %}
+{% set batter_name = gamelog.homBatOne %}
+{% elif gamelog.homBatTwoID == batter_id %}
+{% set batter_name = gamelog.homBatTwo %}
+{% elif gamelog.homBatThreeID == batter_id %}
+{% set batter_name = gamelog.homBatThree %}
+{% elif gamelog.homBatFourID == batter_id %}
+{% set batter_name = gamelog.homBatFour %}
+{% elif gamelog.homBatFiveID == batter_id %}
+{% set batter_name = gamelog.homBatFive %}
+{% elif gamelog.homBatSixID == batter_id %}
+{% set batter_name = gamelog.homBatSix %}
+{% elif gamelog.homBatSevenID == batter_id %}
+{% set batter_name = gamelog.homBatSeven %}
+{% elif gamelog.homBatEightID == batter_id %}
+{% set batter_name = gamelog.homBatEight %}
+{% elif gamelog.homBatNineID == batter_id %}
+{% set batter_name = gamelog.homBatNine %}
+{% elif gamelog.visBatOneID == batter_id %}
+{% set batter_name = gamelog.visBatOne %}
+{% elif gamelog.visBatTwoID == batter_id %}
+{% set batter_name = gamelog.visBatTwo %}
+{% elif gamelog.visBatThreeID == batter_id %}
+{% set batter_name = gamelog.visBatThree %}
+{% elif gamelog.visBatFourID == batter_id %}
+{% set batter_name = gamelog.visBatFour %}
+{% elif gamelog.visBatFiveID == batter_id %}
+{% set batter_name = gamelog.visBatFive %}
+{% elif gamelog.visBatSixID == batter_id %}
+{% set batter_name = gamelog.visBatSix %}
+{% elif gamelog.visBatSevenID == batter_id %}
+{% set batter_name = gamelog.visBatSeven %}
+{% elif gamelog.visBatEightID == batter_id %}
+{% set batter_name = gamelog.visBatEight %}
+{% elif gamelog.visBatNineID == batter_id %}
+{% set batter_name = gamelog.visBatNine %}
+{% endif %}
+
+<h3 style="text-align: center">{{ batter_name }}</h3>
+<a href="/batters/{{ batter_id }}/random/" style="text-align: center">Random Game</a>
+<br>
+<div class="container">
+<table class="table table-hover">
+  <tr>
+    <th>Date</th>
+    <th>Team</th>
+    <th>Opp</th>
+    <th>Pitcher</th>
+    <th>Opp Pitcher</th>
+  </tr>
+  {% for game in games %}
+  {% set gamelog = game[1] %}
+  {% set game = game[0] %}
+  <tr>
+    <td><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }}
+    {% if gamelog.gameType == "ASG" %}
+    - {{ game.date[:4] }} All-Star Game
+    {% elif gamelog.gameType != None %}
+    - {% if gamelog.gameType != "WS" %}{{ gamelog.homTeamLg }}{% endif %}{{ gamelog.gameType }}{% if gamelog.gameType != "WC" %}:G{{ gamelog.homTeamGm }}{% endif %}</a>
+    {% endif %}
+    </td>
+    <td>
+
+    {% if ((gamelog.homBatOneID == batter_id) or
+    (gamelog.homBatTwoID == batter_id) or
+    (gamelog.homBatThreeID == batter_id) or
+    (gamelog.homBatFourID == batter_id) or
+    (gamelog.homBatFiveID == batter_id) or
+    (gamelog.homBatSixID == batter_id) or
+    (gamelog.homBatSevenID == batter_id) or
+    (gamelog.homBatEightID == batter_id) or
+    (gamelog.homBatNineID == batter_id)) %}
+    <a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">{{ game.homeTeam }}</a>
+    </td>
+    <td><a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">vs {{ game.awayTeam }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.homPitchId }}/">{{ gamelog.homPitch }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.visPitchId }}/">{{ gamelog.visPitch }}</a></td>
+
+    {% elif ((gamelog.visBatOneID == batter_id) or
+    (gamelog.visBatTwoID == batter_id) or
+    (gamelog.visBatThreeID == batter_id) or
+    (gamelog.visBatFourID == batter_id) or
+    (gamelog.visBatFiveID == batter_id) or
+    (gamelog.visBatSixID == batter_id) or
+    (gamelog.visBatSevenID == batter_id) or
+    (gamelog.visBatEightID == batter_id) or
+    (gamelog.visBatNineID == batter_id)) %}
+    <a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">{{ game.awayTeam }}</a>
+    </td>
+    <td><a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">at {{ game.homeTeam }}</td>
+    <td><a href="/pitchers/{{ gamelog.visPitchId }}/">{{ gamelog.visPitch }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.homPitchId }}/">{{ gamelog.homPitch }}</a></td>
+    {% endif %}
+  </tr>
+
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}

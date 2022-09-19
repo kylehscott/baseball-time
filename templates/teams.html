@@ -1,0 +1,58 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set teams_list = {} %}
+
+{% for team in teams + ["ALS"] %}
+{% if teams_list.update({team: 0}) %} {% endif %}
+  {% for game in games %}
+    {% if team == "MIA" and (game.homeTeam == "FLO" or game.awayTeam == "FLO") %}
+      {% if teams_list.update({team: teams_list[team] + 1}) %} {% endif %}
+    {% elif team == "WAS" and (game.homeTeam == "MON" or game.awayTeam == "MON") %}
+      {% if teams_list.update({team: teams_list[team] + 1}) %} {% endif %}
+    {% elif team == "LAN" and (game.homeTeam == "BRO" or game.awayTeam == "BRO") %}
+      {% if teams_list.update({team: teams_list[team] + 1}) %} {% endif %}
+    {% elif team == "ANA" and (game.homeTeam == "CAL" or game.awayTeam == "CAL") %}
+      {% if teams_list.update({team: teams_list[team] + 1}) %} {% endif %}
+    {% endif %}
+    {% if game.homeTeam == team or game.awayTeam == team %}
+      {% if teams_list.update({team: teams_list[team] + 1}) %} {% endif %}
+    {% endif %}
+
+  {% endfor %}
+{% endfor %}
+
+
+
+  <h3 class="text-dark" style="text-align: center;">Games By Team</h3>
+  <hr>
+  <br>
+  <div class="row" style="text-align: center;">
+    {% for team in teams %}
+    <div class="col-sm-6 col-md-4 col-lg-2">
+      <a href="/teams/{{ team }}/">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ team }}</h4>
+            <p class="card-text">{{ teams_list[team] }} Games Available</p>
+          </div>
+        </div>
+      </a>
+      <br>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="row center" style="text-align: center">
+    <div class="col-12">
+      <a href="/games/all-star-games/">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">All-Star Games</h4>
+            <p class="card-text">{{ teams_list["ALS"] }} Games Available</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+{% endblock %}

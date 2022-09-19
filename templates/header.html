@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="bg-dark" style="margin:0; padding:0; height:100%;">
+
+    <head>
+        <title>
+          {% if header %}
+            {{ header }} |
+          {% endif %}
+            baseball-time.com
+        </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link rel="icon" href="{{ url_for('static', filename='images/favicon-96x96.png') }}" type="image/png">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-8066552674048953",
+            enable_page_level_ads: true
+          });
+        </script>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </head>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='images/favicon-96x96.png') }}" width="30" height="30" alt=""></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item {% if request.path == "/years/" %}active{% endif %}">
+            <a class="nav-link" href="/years/">Games By Year</a>
+          </li>
+          <li class="nav-item {% if request.path == "/teams/" %}active{% endif %}">
+            <a class="nav-link" href="/teams/">Games By Team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/random/">Random Game</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+
+      <body class="bg-dark">
+        <div class="card container">
+          <br>
+          {% block body %}{% endblock %}
+          <br>
+
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        </div>
+      </body>
+
+      <footer class="footer">
+        <br>
+        <p class="text-center font-weight-light text-white" style="font-size: 0.75em">
+          baseball-time.com is not affiliated with Major League Baseball or any of its members.<br>
+          All game data was obtained free of charge from and is copyrighted by RetroSheet.<br>
+          Copyright &copy; 2018 KHS Designs.
+        </p>
+        <br>
+      </footer>
+
+
+
+</html>

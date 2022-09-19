@@ -1,0 +1,60 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+{% set manager_name = "Manager name" %}
+
+
+
+{% if games[0][1].homManId == manager_id %}
+{% set manager_name = games[0][1].homMan %}
+{% elif games[0][1].visManId == manager_id  %}
+{% set manager_name = games[0][1].visMan %}
+{% endif %}
+
+<h3 style="text-align: center">{{ manager_name }}</h3>
+<a href="/managers/{{ manager_id }}/random/" style="text-align: center">Random Game</a>
+<br>
+<div class="container">
+<table class="table table-hover">
+  <tr>
+    <th>Date</th>
+    <th>Team</th>
+    <th>Opp</th>
+    <th>Pitcher</th>
+    <th>Opp Pitcher</th>
+  </tr>
+  {% for game in games %}
+  {% set gamelog = game[1] %}
+  {% set game = game[0] %}
+  <tr>
+    <td><a href="/games/{{ game.homeTeam }}/{{ game.date[:4] }}/{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.gameNo }}">{{ game.date[4:6] }}/{{ game.date[6:] }}/{{ game.date[:4] }}
+
+    {% if gamelog.gameType == "ASG" %}
+    - {{ game.date[:4] }} All-Star Game
+    {% elif gamelog.gameType != None %}
+    - {% if gamelog.gameType != "WS" %}{{ gamelog.homTeamLg }}{% endif %}{{ gamelog.gameType }}{% if gamelog.gameType != "WC" %}:G{{ gamelog.homTeamGm }}{% endif %}</a>
+    {% endif %}
+    </td>
+    <td>
+
+    {% if gamelog.homManId == manager_id %}
+    <a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">{{ game.homeTeam }}</a>
+    </td>
+    <td><a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">vs {{ game.awayTeam }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.homPitchId }}/">{{ gamelog.homPitch }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.visPitchId }}/">{{ gamelog.visPitch }}</a></td>
+
+    {% elif gamelog.visManId == manager_id %}
+    <a href="/teams/{{ game.awayTeam }}/{{ game.date[:4] }}/">{{ game.awayTeam }}</a>
+    </td>
+    <td><a href="/teams/{{ game.homeTeam }}/{{ game.date[:4] }}/">at {{ game.homeTeam }}</td>
+    <td><a href="/pitchers/{{ gamelog.visPitchId }}/">{{ gamelog.visPitch }}</a></td>
+    <td><a href="/pitchers/{{ gamelog.homPitchId }}/">{{ gamelog.homPitch }}</a></td>
+    {% endif %}
+  </tr>
+
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}
